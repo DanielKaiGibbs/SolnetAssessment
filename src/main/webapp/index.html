@@ -1,0 +1,42 @@
+<html>
+
+<head>
+	<link rel="stylesheet" href="markdown.css">
+	<title>Java Coding Challenge</title>
+</head>
+
+<body>
+	<div id="contents" class="markdown-body">
+		<h1 data-line="0" class="code-line-0">Java Coding Challenge - Task Management API Suite</h1>
+		<p data-line="2" class="code-line-2">This is a maven project which uses an embedded derby database to store
+			tasks in a table.</p>
+		<p data-line="4" class="code-line-4">The table structure is provided below:</p>
+		<p data-line="6" class="code-line-6"><strong>Table name</strong> - <em>tasks</em></p>
+		<p data-line="8" class="code-line-8"><strong>Table columns:</strong></p>
+		<ul>
+			<li data-line="9" class="code-line-9"><em>id</em> int not null generated always as identity,</li>
+			<li data-line="10" class="code-line-10"><em>title</em> varchar(256) not null,</li>
+			<li data-line="11" class="code-line-11"><em>description</em> varchar(1024),</li>
+			<li data-line="12" class="code-line-12"><em>due_date</em> date,</li>
+			<li data-line="13" class="code-line-13"><em>status</em> varchar(10),</li>
+			<li data-line="14" class="code-line-14"><em>creation_date</em> date not null,</li>
+			<li data-line="15" class="code-line-15"><em>primary key (id)</em></li>
+		</ul>
+		<p data-line="17" class="code-line-17">Your challenge is to build a production grade API suite that uses HTTP to
+			allow users to manage their task data.</p>
+		<h2 data-line="19" class="code-line-19">Requirements</h2>
+		<p data-line="21" class="code-line-21">You will need to provide APIs for the following actions:</p>
+		<ol>
+			<li data-line="23" class="code-line-23">Fetch all tasks.</li>
+			<li data-line="24" class="code-line-24">Fetch all overdue tasks.</li>
+			<li data-line="25" class="code-line-25">Fetch data for a single task.</li>
+			<li data-line="26" class="code-line-26">Add a new task.</li>
+			<li data-line="27" class="code-line-27">Modify a task.</li>
+			<li data-line="28" class="code-line-28">Delete a task.</li>
+		</ol>
+	</div>
+
+
+</body>
+
+</html>
