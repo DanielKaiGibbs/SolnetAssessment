@@ -1,14 +1,9 @@
 package nz.co.solnet.helper;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.*;
 
 public class DatabaseHelper {
 
@@ -49,17 +44,19 @@ public class DatabaseHelper {
 				sqlCreateTable.append("CREATE TABLE tasks (id int not null generated always as identity,");
 				sqlCreateTable.append(" title varchar(256) not null,");
 				sqlCreateTable.append(" description varchar(1024),");
-				//sqlCreateTable.append(" due_date date,");
+				sqlCreateTable.append(" due_date date,");
 				sqlCreateTable.append(" status varchar(10),");
-				//sqlCreateTable.append(" creation_date date not null,");
+				sqlCreateTable.append(" creation_date date not null,");
 				sqlCreateTable.append(" primary key (id))");
 				statement.execute(sqlCreateTable.toString());
 				logger.info("Table created.");
 
 				StringBuilder sqlInsertInitialData = new StringBuilder();
 				sqlInsertInitialData.append("INSERT INTO tasks (");
-				sqlInsertInitialData.append("title, description, status)");
-				sqlInsertInitialData.append("VALUES('Complete A Task', 'Find a task and complete it', 'complete')");
+				sqlInsertInitialData.append("title, description, status, due_date, creation_date)");
+				sqlInsertInitialData.append("VALUES");
+				sqlInsertInitialData.append("('Dinner', 'Cook up something yum', 'todo', '1992-04-16', '1992-04-16'),");
+				sqlInsertInitialData.append("('Breakfast', 'Cook up something yum', 'complete', '1992-04-16', '1992-04-16')");
 				statement.execute(sqlInsertInitialData.toString());
 
 				logger.info("Init data inserted.");
@@ -116,13 +113,15 @@ public class DatabaseHelper {
 		}
 	}
 
-	public static ResultSet getAllTasks() {
+	public static ResultSet getAllTasks(String taskName) {
 		try {
 			Connection conn = DriverManager.getConnection(DATABASE_URL);
 			Statement statement = conn.createStatement();
 
 			if (doesTableExist("tasks", conn)) {
 				String sqlSelect = "SELECT * FROM tasks";
+
+				if (taskName != null) sqlSelect += " WHERE title = '" + taskName + "'";
 
 				return statement.executeQuery(sqlSelect);
 			}

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // Extend HttpServlet class
-public class HelloWorld extends HttpServlet {
+public class GetTasksServlet extends HttpServlet {
 
     private String message;
 
@@ -23,8 +23,9 @@ public class HelloWorld extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        System.out.println("THING: " + request.getParameter("taskName"));
 
-        ResultSet queryResult = DatabaseHelper.getAllTasks();
+        ResultSet queryResult = DatabaseHelper.getAllTasks(request.getParameter("taskName"));
         try {
             int columnCount = queryResult.getMetaData().getColumnCount();
 
