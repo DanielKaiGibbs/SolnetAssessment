@@ -19,6 +19,7 @@ public class FetchTasksServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String query = "";
 
+        //Determine the query to apply to the database
         if (request.getRequestURI().equals("/fetchAll")) query = "SELECT * FROM tasks";
         else if (request.getRequestURI().equals("/fetchTask")) {
             query = "SELECT * FROM tasks";
@@ -31,13 +32,10 @@ public class FetchTasksServlet extends HttpServlet {
             query = "SELECT * FROM tasks WHERE due_date < CAST('" + new java.sql.Date(System.currentTimeMillis()) + "' AS DATE)";
         }
 
-        System.out.println("QUERY: " + query);
-
-        //Query the database
-        ResultSet queryResult = DatabaseHelper.queryDatabase(query);
-
-        //If the query is successful then display the results
         try {
+            //Query the database
+            ResultSet queryResult = DatabaseHelper.queryDatabase(query);
+
             if (!queryResult.next()) {
                 out.println("No tasks found");
                 return;
@@ -52,10 +50,12 @@ public class FetchTasksServlet extends HttpServlet {
                     if (++i < columnCount) rowString.append(", ");
                 }
                 out.println("<p>" + rowString.toString() + "</p>");
-                response.setStatus(200);
             } while(queryResult.next());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            response.setStatus(200);
+
+        } catch (SQLException e) {
+            response.setStatus(400);
+            out.println("Error querying the database: " + e);
         }
     }
 

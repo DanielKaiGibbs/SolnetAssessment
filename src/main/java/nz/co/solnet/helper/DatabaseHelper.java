@@ -120,19 +120,16 @@ public class DatabaseHelper {
 		}
 	}
 
-	public static ResultSet queryDatabase(String query) {
-		try {
-			Connection conn = DriverManager.getConnection(DATABASE_URL);
-			Statement statement = conn.createStatement();
+	public static ResultSet queryDatabase(String query) throws SQLException{
 
-			if (doesTableExist("tasks", conn)) {
-				ResultSet rs = statement.executeQuery(query);
-				return rs;
-			} else {
-				logger.error("Cannot access database");
-			}
-		} catch (SQLException e) {
-			logger.error("Error connecting to db", e);
+		Connection conn = DriverManager.getConnection(DATABASE_URL);
+		Statement statement = conn.createStatement();
+
+		if (doesTableExist("tasks", conn)) {
+			ResultSet rs = statement.executeQuery(query);
+			return rs;
+		} else {
+			logger.error("Cannot access database");
 		}
 		return null;
 	}
