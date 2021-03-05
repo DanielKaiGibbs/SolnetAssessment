@@ -108,5 +108,22 @@ public class DatabaseHelper {
 		}
 	}
 
+	public static ResultSet getAllTasks() {
+		try {
+			Connection conn = DriverManager.getConnection(DATABASE_URL);
+			Statement statement = conn.createStatement();
+
+			if (doesTableExist("tasks", conn)) {
+				String sql1 = "SELECT * FROM tasks";
+
+				ResultSet r = statement.executeQuery(sql1);
+
+				return r;
+			}
+		} catch (SQLException e) {
+			logger.error("Error connecting to db", e);
+		}
+		return null;
+	}
 
 }

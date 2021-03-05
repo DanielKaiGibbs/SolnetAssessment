@@ -5,5 +5,14 @@
 		<listener-class>nz.co.solnet.BootstrapConfig</listener-class>
 	</listener>
 
+	<servlet>
+		<servlet-name>HelloWorld</servlet-name>
+		<servlet-class>HelloWorld</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HelloWorld</servlet-name>
+		<url-pattern>/HelloWorld</url-pattern>
+	</servlet-mapping>
 
 </web-app>
