@@ -55,6 +55,14 @@ public class DatabaseHelper {
 				sqlCreateTable.append(" primary key (id))");
 				statement.execute(sqlCreateTable.toString());
 				logger.info("Table created.");
+
+				StringBuilder sqlInsertInitialData = new StringBuilder();
+				sqlInsertInitialData.append("INSERT INTO tasks (");
+				sqlInsertInitialData.append("title, description, status)");
+				sqlInsertInitialData.append("VALUES('Complete A Task', 'Find a task and complete it', 'complete')");
+				statement.execute(sqlInsertInitialData.toString());
+
+				logger.info("Init data inserted.");
 			} else {
 				logger.info("Table already exists");
 			}
@@ -114,11 +122,9 @@ public class DatabaseHelper {
 			Statement statement = conn.createStatement();
 
 			if (doesTableExist("tasks", conn)) {
-				String sql1 = "SELECT * FROM tasks";
+				String sqlSelect = "SELECT * FROM tasks";
 
-				ResultSet r = statement.executeQuery(sql1);
-
-				return r;
+				return statement.executeQuery(sqlSelect);
 			}
 		} catch (SQLException e) {
 			logger.error("Error connecting to db", e);
