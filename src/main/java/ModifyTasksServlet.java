@@ -44,12 +44,14 @@ public class ModifyTasksServlet extends HttpServlet {
                     " VALUES (" +
                     "'" + updateRequest.get("title") + "', " +
                     "'" + updateRequest.get("description") + "', " +
-                    "'" + updateRequest.get("status") + "'', " +
+                    "'" + updateRequest.get("status") + "', " +
                     "'" + updateRequest.get("due_date") + "', " +
                     "'" + updateRequest.get("creation_date") + "')";
 
+            System.out.println(query);
+
             //Apply the query to the database
-            DatabaseHelper.queryDatabase(query);
+            DatabaseHelper.updateDatabase(query);
 
             out.println("Successfully inserted new task into the database");
             response.setStatus(200);

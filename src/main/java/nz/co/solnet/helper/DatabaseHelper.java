@@ -134,4 +134,16 @@ public class DatabaseHelper {
 		return null;
 	}
 
+	public static void updateDatabase(String query) throws SQLException{
+
+		Connection conn = DriverManager.getConnection(DATABASE_URL);
+		Statement statement = conn.createStatement();
+
+		if (doesTableExist("tasks", conn)) {
+			statement.execute(query);
+		} else {
+			logger.error("Cannot access database");
+		}
+	}
+
 }
