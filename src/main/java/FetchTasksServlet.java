@@ -52,6 +52,7 @@ public class FetchTasksServlet extends HttpServlet {
                     if (++i < columnCount) rowString.append(", ");
                 }
                 out.println("<p>" + rowString.toString() + "</p>");
+                response.setStatus(200);
             } while(queryResult.next());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
