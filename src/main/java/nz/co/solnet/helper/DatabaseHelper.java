@@ -1,9 +1,16 @@
 package nz.co.solnet.helper;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.sql.*;
 
 public class DatabaseHelper {
 
@@ -30,7 +37,7 @@ public class DatabaseHelper {
 
 	/**
 	 * Insert sample seed data into the database.
-	 * 
+	 *
 	 * @param conn
 	 * @throws SQLException
 	 */
@@ -68,7 +75,7 @@ public class DatabaseHelper {
 
 	/**
 	 * Checks if the table exists in the database.
-	 * 
+	 *
 	 * @param tableName - table name to be checked in the database
 	 * @param conn      - database connection to use
 	 * @return - boolean to indicate of the table exists or not
@@ -87,7 +94,7 @@ public class DatabaseHelper {
 	public static void cleanDatabase() {
 
 		try (Connection conn = DriverManager.getConnection(DATABASE_URL);
-				Statement statement = conn.createStatement()) {
+			 Statement statement = conn.createStatement()) {
 			String sql1 = "DROP TABLE tasks";
 			statement.execute(sql1);
 			logger.info("Table dropped successfully");
@@ -113,17 +120,16 @@ public class DatabaseHelper {
 		}
 	}
 
-	public static ResultSet getAllTasks(String taskName) {
+	public static ResultSet queryDatabase(String query) {
 		try {
 			Connection conn = DriverManager.getConnection(DATABASE_URL);
 			Statement statement = conn.createStatement();
 
 			if (doesTableExist("tasks", conn)) {
-				String sqlSelect = "SELECT * FROM tasks";
-
-				if (taskName != null) sqlSelect += " WHERE title = '" + taskName + "'";
-
-				return statement.executeQuery(sqlSelect);
+				ResultSet rs = statement.executeQuery(query);
+				return rs;
+			} else {
+				logger.error("Cannot access database");
 			}
 		} catch (SQLException e) {
 			logger.error("Error connecting to db", e);

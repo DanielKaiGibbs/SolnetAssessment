@@ -6,13 +6,13 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>GetTasksServlet</servlet-name>
-		<servlet-class>GetTasksServlet</servlet-class>
+		<servlet-name>FetchTasksServlet</servlet-name>
+		<servlet-class>FetchTasksServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>GetTasksServlet</servlet-name>
-		<url-pattern>/get</url-pattern>
+		<servlet-name>FetchTasksServlet</servlet-name>
+		<url-pattern>/fetch</url-pattern>
 	</servlet-mapping>
 
 </web-app>

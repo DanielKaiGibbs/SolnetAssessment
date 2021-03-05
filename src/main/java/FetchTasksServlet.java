@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // Extend HttpServlet class
-public class GetTasksServlet extends HttpServlet {
+public class FetchTasksServlet extends HttpServlet {
 
     private String message;
 
@@ -20,29 +20,43 @@ public class GetTasksServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        //Set up response writer
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        System.out.println("THING: " + request.getParameter("taskName"));
+        String query = "SELECT * FROM tasks";
 
-        ResultSet queryResult = DatabaseHelper.getAllTasks(request.getParameter("taskName"));
+        String taskName = request.getParameter("taskName");
+        if (taskName != null) {
+            query += " WHERE title = '" + taskName + "'";
+        } else {
+            System.out.println("ITS NULL");
+        }
+
+        //Query the database
+        ResultSet queryResult = DatabaseHelper.queryDatabase(query);
+
+        //If the query is successful then display the results
         try {
+            if (!queryResult.next()) {
+                out.println("No tasks found");
+                return;
+            }
+
             int columnCount = queryResult.getMetaData().getColumnCount();
 
-            while(queryResult.next()) {
+            do {
                 StringBuilder rowString = new StringBuilder();
                 for (int i = 0; i < columnCount;) {
                     rowString.append(queryResult.getString(i + 1));
                     if (++i < columnCount) rowString.append(", ");
                 }
                 out.println("<p>" + rowString.toString() + "</p>");
-            }
+            } while(queryResult.next());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public void destroy() {
-        // do nothing.
-    }
+    public void destroy() {}
 }
