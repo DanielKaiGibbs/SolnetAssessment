@@ -7,15 +7,9 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// Extend HttpServlet class
 public class FetchTasksServlet extends HttpServlet {
 
-    private String message;
-
-    public void init() throws ServletException {
-        // Do required initialization
-        message = "Hello World";
-    }
+    public void init() throws ServletException {}
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,7 +18,6 @@ public class FetchTasksServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String query = "";
-
 
         if (request.getRequestURI().equals("/fetchAll")) query = "SELECT * FROM tasks";
         else if (request.getRequestURI().equals("/fetchTask")) {

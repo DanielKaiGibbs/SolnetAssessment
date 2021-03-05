@@ -10,6 +10,11 @@
 		<servlet-class>FetchTasksServlet</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>ModifyTasksServlet</servlet-name>
+		<servlet-class>ModifyTasksServlet</servlet-class>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>FetchTasksServlet</servlet-name>
 		<url-pattern>/fetchAll</url-pattern>
@@ -21,6 +26,10 @@
 	<servlet-mapping>
 		<servlet-name>FetchTasksServlet</servlet-name>
 		<url-pattern>/fetchOverdue</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ModifyTasksServlet</servlet-name>
+		<url-pattern>/update</url-pattern>
 	</servlet-mapping>
 
 </web-app>
