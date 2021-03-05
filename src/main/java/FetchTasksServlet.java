@@ -23,14 +23,16 @@ public class FetchTasksServlet extends HttpServlet {
         //Set up response writer
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        String query = "";
 
-        String query = "SELECT * FROM tasks";
 
-        String taskName = request.getParameter("taskName");
-        if (taskName != null) {
-            query += " WHERE title = '" + taskName + "'";
-        } else {
-            System.out.println("ITS NULL");
+        if (request.getRequestURI().equals("/fetchAll")) query = "SELECT * FROM tasks";
+        else if (request.getRequestURI().equals("/fetchTask")) {
+            query = "SELECT * FROM tasks";
+
+            //Extract the taskName parameter if it is present to filter down to the specified task
+            String taskName = request.getParameter("taskName");
+            if (taskName != null) query += " WHERE title = '" + taskName + "'";
         }
 
         //Query the database

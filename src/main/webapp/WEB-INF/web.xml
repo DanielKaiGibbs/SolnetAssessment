@@ -12,7 +12,11 @@
 
 	<servlet-mapping>
 		<servlet-name>FetchTasksServlet</servlet-name>
-		<url-pattern>/fetch</url-pattern>
+		<url-pattern>/fetchAll</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FetchTasksServlet</servlet-name>
+		<url-pattern>/fetchTask</url-pattern>
 	</servlet-mapping>
 
 </web-app>
