@@ -18,5 +18,9 @@
 		<servlet-name>FetchTasksServlet</servlet-name>
 		<url-pattern>/fetchTask</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FetchTasksServlet</servlet-name>
+		<url-pattern>/fetchOverdue</url-pattern>
+	</servlet-mapping>
 
 </web-app>

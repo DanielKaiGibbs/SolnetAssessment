@@ -34,6 +34,11 @@ public class FetchTasksServlet extends HttpServlet {
             String taskName = request.getParameter("taskName");
             if (taskName != null) query += " WHERE title = '" + taskName + "'";
         }
+        else if (request.getRequestURI().equals("/fetchOverdue")) {
+            query = "SELECT * FROM tasks WHERE due_date < CAST('" + new java.sql.Date(System.currentTimeMillis()) + "' AS DATE)";
+        }
+
+        System.out.println("QUERY: " + query);
 
         //Query the database
         ResultSet queryResult = DatabaseHelper.queryDatabase(query);
