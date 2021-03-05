@@ -6,13 +6,13 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>HelloWorld</servlet-name>
-		<servlet-class>HelloWorld</servlet-class>
+		<servlet-name>GetTasksServlet</servlet-name>
+		<servlet-class>GetTasksServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>HelloWorld</servlet-name>
-		<url-pattern>/HelloWorld</url-pattern>
+		<servlet-name>GetTasksServlet</servlet-name>
+		<url-pattern>/get</url-pattern>
 	</servlet-mapping>
 
 </web-app>

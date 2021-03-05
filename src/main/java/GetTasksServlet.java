@@ -20,30 +20,21 @@ public class HelloWorld extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Set response content type
         response.setContentType("text/html");
-
-        // Actual logic goes here.
         PrintWriter out = response.getWriter();
 
-        ResultSet queryResult = DatabaseHelper.getAllTasks();
 
+        ResultSet queryResult = DatabaseHelper.getAllTasks();
         try {
             int columnCount = queryResult.getMetaData().getColumnCount();
 
-
             while(queryResult.next()) {
                 StringBuilder rowString = new StringBuilder();
-
-                System.out.println("COLS: " + columnCount);
-
                 for (int i = 0; i < columnCount;) {
                     rowString.append(queryResult.getString(i + 1));
-                    if (++i < columnCount) rowString.append(",");
+                    if (++i < columnCount) rowString.append(", ");
                 }
-
-                System.out.println("<h1>" + rowString.toString() + "</h1>");
-                out.println("<h1>" + rowString.toString() + "</h1>");
+                out.println("<p>" + rowString.toString() + "</p>");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
