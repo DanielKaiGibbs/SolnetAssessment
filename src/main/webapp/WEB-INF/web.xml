@@ -17,11 +17,7 @@
 
 	<servlet-mapping>
 		<servlet-name>FetchTasksServlet</servlet-name>
-		<url-pattern>/fetchAll</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>FetchTasksServlet</servlet-name>
-		<url-pattern>/fetchTask</url-pattern>
+		<url-pattern>/fetch</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>FetchTasksServlet</servlet-name>
