@@ -11,6 +11,13 @@ public class FetchTasksServlet extends HttpServlet {
 
     public void init() throws ServletException {}
 
+    /**
+     * Respond to API requests to fetch data from the database.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -24,7 +31,7 @@ public class FetchTasksServlet extends HttpServlet {
         else if (request.getRequestURI().equals("/fetchTask")) {
             query = "SELECT * FROM tasks";
 
-            //Extract the taskName parameter if it is present to filter down to the specified task
+            //Extract the taskName parameter to filter down to the specified task
             String taskName = request.getParameter("taskName");
             if (taskName != null) query += " WHERE title = '" + taskName + "'";
         }
@@ -36,6 +43,7 @@ public class FetchTasksServlet extends HttpServlet {
             //Query the database
             ResultSet queryResult = DatabaseHelper.queryDatabase(query);
 
+            //Return an empty set if there are no queries returned from the query
             if (!queryResult.next()) {
                 out.println("[]");
                 response.setStatus(200);
@@ -67,15 +75,22 @@ public class FetchTasksServlet extends HttpServlet {
 
     public void destroy() {}
 
-    public String taskToJSON(ResultSet taskSet) throws SQLException {
+    /**
+     * Converts a task to a json string.
+     * @param task
+     * @return
+     * @throws SQLException
+     */
+    public String taskToJSON(ResultSet task) throws SQLException {
         StringBuilder taskJSON = new StringBuilder();
+
         taskJSON.append("{");
-        taskJSON.append("\"id\" : " + taskSet.getString("id") + ", ");
-        taskJSON.append("\"title\" : \"" + taskSet.getString("title") + "\", ");
-        taskJSON.append("\"description\" : \"" + taskSet.getString("description") + "\", ");
-        taskJSON.append("\"status\" : \"" + taskSet.getString("status") + "\", ");
-        taskJSON.append("\"due_date\" : \"" + taskSet.getString("due_date") + "\", ");
-        taskJSON.append("\"creation_date\" : \"" + taskSet.getString("creation_date") + "\"}");
+        taskJSON.append("\"id\" : " + task.getString("id") + ", ");
+        taskJSON.append("\"title\" : \"" + task.getString("title") + "\", ");
+        taskJSON.append("\"description\" : \"" + task.getString("description") + "\", ");
+        taskJSON.append("\"status\" : \"" + task.getString("status") + "\", ");
+        taskJSON.append("\"due_date\" : \"" + task.getString("due_date") + "\", ");
+        taskJSON.append("\"creation_date\" : \"" + task.getString("creation_date") + "\"}");
 
         return taskJSON.toString();
     }
