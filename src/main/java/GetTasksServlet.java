@@ -7,7 +7,7 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class FetchTasksServlet extends HttpServlet {
+public class GetTasksServlet extends HttpServlet {
 
     public void init() throws ServletException {}
 
@@ -24,9 +24,10 @@ public class FetchTasksServlet extends HttpServlet {
         //Set up response writer
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        String query = "";
 
         //Determine the query to apply to the database
+        String query = "";
+
         if (request.getRequestURI().equals("/fetch")) {
             query = "SELECT * FROM tasks";
 
@@ -34,9 +35,8 @@ public class FetchTasksServlet extends HttpServlet {
             String idParam = request.getParameter("id");
             if (idParam != null) query += " WHERE id = " + idParam + "";
         }
-        else if (request.getRequestURI().equals("/fetchOverdue")) {
+        else if (request.getRequestURI().equals("/fetchOverdue"))
             query = "SELECT * FROM tasks WHERE due_date < CAST('" + new java.sql.Date(System.currentTimeMillis()) + "' AS DATE)";
-        }
 
         try {
             //Query the database
@@ -49,13 +49,14 @@ public class FetchTasksServlet extends HttpServlet {
                 return;
             }
 
+            //Convert the query result set to JSON
             StringBuilder jsonOutput = new StringBuilder("[");
             while(true) {
                 try {
-                    jsonOutput.append(taskToJSON(queryResult));
+                    jsonOutput.append(convertTaskToJSON(queryResult));
                 } catch (SQLException e) {
-                    out.println("Malformed database entries: " + e);
-                    response.setStatus(400);
+                    out.println("INTERNAL ERROR: Malformed database entries: " + e);
+                    response.setStatus(500);
                     return;
                 }
 
@@ -63,6 +64,8 @@ public class FetchTasksServlet extends HttpServlet {
                 else break;
             }
             jsonOutput.append("]");
+
+            //Output JSON response
             out.println(jsonOutput.toString());
             response.setStatus(200);
 
@@ -75,12 +78,12 @@ public class FetchTasksServlet extends HttpServlet {
     public void destroy() {}
 
     /**
-     * Converts a task to a json string.
+     * Converts a task entry to a JSON string.
      * @param task
      * @return
      * @throws SQLException
      */
-    public String taskToJSON(ResultSet task) throws SQLException {
+    public String convertTaskToJSON(ResultSet task) throws SQLException {
         StringBuilder taskJSON = new StringBuilder();
 
         taskJSON.append("{");

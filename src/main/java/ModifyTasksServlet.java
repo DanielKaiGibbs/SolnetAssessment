@@ -29,16 +29,16 @@ public class ModifyTasksServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        //Extract the json describing the specified task
-        String taskData = request.getParameter("jsonData");
-        if (taskData == null) {
-            out.println("ERROR: 'jsonData' parameter must be provided");
+        //Extract the JSON describing the specified task
+        String payloadParam = request.getParameter("payload");
+        if (payloadParam == null) {
+            out.println("ERROR: 'payload' parameter must be provided");
             response.setStatus(400);
             return;
         }
 
         try {
-            JSONObject jsonRequest = new JSONObject(taskData);
+            JSONObject jsonPayload = new JSONObject(payloadParam);
             String query = "";
 
             //Ensure that the incoming JSON contains the correct attributes to alter or add a new entry
@@ -53,7 +53,7 @@ public class ModifyTasksServlet extends HttpServlet {
                 return;
             }
 
-            if (!jsonRequest.keySet().containsAll(Arrays.asList(requiredAttributes))) {
+            if (!jsonPayload.keySet().containsAll(Arrays.asList(requiredAttributes))) {
                 response.setStatus(400);
                 out.println("ERROR: Required attributes must be supplied in the json body: " + Arrays.toString(requiredAttributes));
                 return;
@@ -63,20 +63,20 @@ public class ModifyTasksServlet extends HttpServlet {
             if (request.getRequestURI().equals("/add")) {
                 query = "INSERT INTO tasks (title, description, status, due_date, creation_date) " +
                         " VALUES (" +
-                        "'" + jsonRequest.get("title") + "', " +
-                        "'" + jsonRequest.get("description") + "', " +
-                        "'" + jsonRequest.get("status") + "', " +
-                        "'" + jsonRequest.get("due_date") + "', " +
-                        "'" + jsonRequest.get("creation_date") + "')";
+                        "'" + jsonPayload.get("title") + "', " +
+                        "'" + jsonPayload.get("description") + "', " +
+                        "'" + jsonPayload.get("status") + "', " +
+                        "'" + jsonPayload.get("due_date") + "', " +
+                        "'" + jsonPayload.get("creation_date") + "')";
             }
             else if (request.getRequestURI().equals("/update")) {
                 query = "UPDATE tasks SET " +
-                        "title = '" + jsonRequest.get("title") + "'," +
-                        "description = '" + jsonRequest.get("description") + "'," +
-                        "status = '" + jsonRequest.get("status") + "'," +
-                        "due_date = '" + jsonRequest.get("due_date") + "'," +
-                        "creation_date = '" + jsonRequest.get("creation_date") + "'" +
-                        "WHERE id = " + jsonRequest.get("id");
+                        "title = '" + jsonPayload.get("title") + "'," +
+                        "description = '" + jsonPayload.get("description") + "'," +
+                        "status = '" + jsonPayload.get("status") + "'," +
+                        "due_date = '" + jsonPayload.get("due_date") + "'," +
+                        "creation_date = '" + jsonPayload.get("creation_date") + "'" +
+                        "WHERE id = " + jsonPayload.get("id");
             }
 
             System.out.println(query);

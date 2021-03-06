@@ -29,7 +29,7 @@ public class DeleteTasksServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        //Extract the json describing the specified task
+        //Extract the JSON describing the specified task
         String idParam = request.getParameter("id");
         if (idParam == null) {
             out.println("ERROR: 'id' parameter must be provided");
@@ -39,8 +39,6 @@ public class DeleteTasksServlet extends HttpServlet {
 
         try {
             String query = "DELETE FROM tasks WHERE id = " + idParam;
-
-            System.out.println(query);
 
             //Apply the query to the database
             DatabaseHelper.updateDatabase(query);
