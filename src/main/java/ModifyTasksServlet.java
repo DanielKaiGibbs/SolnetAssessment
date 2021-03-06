@@ -41,38 +41,47 @@ public class ModifyTasksServlet extends HttpServlet {
             JSONObject jsonRequest = new JSONObject(taskData);
             String query = "";
 
+            //Determine the required parameters and ensure they have been presented
+            String[] requiredAttributes;
+            if (request.getRequestURI().equals("/del"))
+                requiredAttributes = new String[]{"id"};
+            else if (request.getRequestURI().equals("/add"))
+                requiredAttributes = new String[]{"title", "description", "status", "due_date", "creation_date"};
+            else if (request.getRequestURI().equals("/update"))
+                requiredAttributes = new String[]{"id", "title", "description", "status", "due_date", "creation_date"};
+            else {
+                response.setStatus(400);
+                out.println("Error: Unsupported API request \"" + request.getRequestURI() + "\"");
+                return;
+            }
+
+            if (!jsonRequest.keySet().containsAll(Arrays.asList(requiredAttributes))) {
+                response.setStatus(400);
+                out.println("ERROR: Required attributes must be supplied in the json body: " + Arrays.toString(requiredAttributes));
+                return;
+            }
+
             //Determine the query to apply to the database
             if (request.getRequestURI().equals("/delete")) {
 
-            } else {
-                //Check that the incoming JSON contains the correct attributes to alter or add a new entry
-                String[] requiredAttributes = new String[]{"title", "description", "status", "due_date", "creation_date"};
-                if (!jsonRequest.keySet().containsAll(Arrays.asList(requiredAttributes))) {
-                    response.setStatus(400);
-                    out.println("ERROR: Required attributes must be supplied in the json body: " + Arrays.toString(requiredAttributes));
-                    return;
-                }
-                if (request.getRequestURI().equals("/add")) {
-                    query = "INSERT INTO tasks (title, description, status, due_date, creation_date) " +
-                            " VALUES (" +
-                            "'" + jsonRequest.get("title") + "', " +
-                            "'" + jsonRequest.get("description") + "', " +
-                            "'" + jsonRequest.get("status") + "', " +
-                            "'" + jsonRequest.get("due_date") + "', " +
-                            "'" + jsonRequest.get("creation_date") + "')";
-                }
-                else if (request.getRequestURI().equals("/update")) {
-                    query = "UPDATE tasks SET " +
-                            "description = '" + jsonRequest.get("description") + "'," +
-                            "status = '" + jsonRequest.get("status") + "'," +
-                            "due_date = '" + jsonRequest.get("due_date") + "'," +
-                            "creation_date = '" + jsonRequest.get("creation_date") + "'" +
-                            "WHERE title = '" + jsonRequest.get("title") + "'";
-                } else {
-                    response.setStatus(400);
-                    out.println("Error: Unsupported API request \"" + request.getRequestURI() + "\"");
-                    return;
-                }
+            }
+            //Check that the incoming JSON contains the correct attributes to alter or add a new entry
+            else if (request.getRequestURI().equals("/add")) {
+                query = "INSERT INTO tasks (title, description, status, due_date, creation_date) " +
+                        " VALUES (" +
+                        "'" + jsonRequest.get("title") + "', " +
+                        "'" + jsonRequest.get("description") + "', " +
+                        "'" + jsonRequest.get("status") + "', " +
+                        "'" + jsonRequest.get("due_date") + "', " +
+                        "'" + jsonRequest.get("creation_date") + "')";
+            }
+            else if (request.getRequestURI().equals("/update")) {
+                query = "UPDATE tasks SET " +
+                        "description = '" + jsonRequest.get("description") + "'," +
+                        "status = '" + jsonRequest.get("status") + "'," +
+                        "due_date = '" + jsonRequest.get("due_date") + "'," +
+                        "creation_date = '" + jsonRequest.get("creation_date") + "'" +
+                        "WHERE id = '" + jsonRequest.get("id") + "'";
             }
 
             System.out.println(query);
@@ -82,6 +91,7 @@ public class ModifyTasksServlet extends HttpServlet {
 
             out.println("Successfully inserted new task into the database");
             response.setStatus(200);
+
         } catch(JSONException e) {
             response.setStatus(400);
             out.println("Error parsing JSON parameter: " + e);
