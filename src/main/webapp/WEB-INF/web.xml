@@ -29,7 +29,15 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ModifyTasksServlet</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ModifyTasksServlet</servlet-name>
 		<url-pattern>/update</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ModifyTasksServlet</servlet-name>
+		<url-pattern>/delete</url-pattern>
 	</servlet-mapping>
 
 </web-app>
