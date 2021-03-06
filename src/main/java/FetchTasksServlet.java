@@ -32,7 +32,7 @@ public class FetchTasksServlet extends HttpServlet {
 
             //Extract the taskName parameter to filter down to the specified task
             String idParam = request.getParameter("id");
-            if (idParam != null) query += " WHERE id = '" + idParam + "'";
+            if (idParam != null) query += " WHERE id = " + idParam + "";
         }
         else if (request.getRequestURI().equals("/fetchOverdue")) {
             query = "SELECT * FROM tasks WHERE due_date < CAST('" + new java.sql.Date(System.currentTimeMillis()) + "' AS DATE)";

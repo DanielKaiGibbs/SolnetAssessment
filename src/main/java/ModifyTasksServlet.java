@@ -77,11 +77,12 @@ public class ModifyTasksServlet extends HttpServlet {
             }
             else if (request.getRequestURI().equals("/update")) {
                 query = "UPDATE tasks SET " +
+                        "title = '" + jsonRequest.get("title") + "'," +
                         "description = '" + jsonRequest.get("description") + "'," +
                         "status = '" + jsonRequest.get("status") + "'," +
                         "due_date = '" + jsonRequest.get("due_date") + "'," +
                         "creation_date = '" + jsonRequest.get("creation_date") + "'" +
-                        "WHERE id = '" + jsonRequest.get("id") + "'";
+                        "WHERE id = " + jsonRequest.get("id");
             }
 
             System.out.println(query);
@@ -89,7 +90,7 @@ public class ModifyTasksServlet extends HttpServlet {
             //Apply the query to the database
             DatabaseHelper.updateDatabase(query);
 
-            out.println("Successfully inserted new task into the database");
+            out.println("Successfully modified the database");
             response.setStatus(200);
 
         } catch(JSONException e) {
