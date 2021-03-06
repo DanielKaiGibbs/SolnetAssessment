@@ -37,22 +37,19 @@ public class FetchTasksServlet extends HttpServlet {
             ResultSet queryResult = DatabaseHelper.queryDatabase(query);
 
             if (!queryResult.next()) {
-                out.println("No tasks found");
+                out.println("[]");
+                response.setStatus(200);
                 return;
             }
 
             out.print("[");
-            do {
-                out.print("{");
-                out.println("\"id\" : " + queryResult.getString("id") + ", ");
-                out.println("\"title\" : \"" + queryResult.getString("title") + "\", ");
-                out.println("\"description\" : \"" + queryResult.getString("description") + "\", ");
-                out.println("\"status\" : \"" + queryResult.getString("status") + "\", ");
-                out.println("\"due_date\" : \"" + queryResult.getString("due_date") + "\", ");
-                out.println("\"creation_date\" : \"" + queryResult.getString("creation_date") + "\"}, ");
-            } while(queryResult.next());
-            out.print("]");
+            while(true) {
+                out.print(taskToJSON(queryResult));
 
+                if (queryResult.next()) out.println(", ");
+                else break;
+            }
+            out.print("]");
             response.setStatus(200);
 
         } catch (SQLException e) {
@@ -62,4 +59,18 @@ public class FetchTasksServlet extends HttpServlet {
     }
 
     public void destroy() {}
+
+    public String taskToJSON(ResultSet taskSet) throws SQLException {
+        StringBuilder taskJSON = new StringBuilder();
+        taskJSON.append("{");
+        taskJSON.append("\"id\" : " + taskSet.getString("id") + ", ");
+        taskJSON.append("\"title\" : \"" + taskSet.getString("title") + "\", ");
+        taskJSON.append("\"description\" : \"" + taskSet.getString("description") + "\", ");
+        taskJSON.append("\"status\" : \"" + taskSet.getString("status") + "\", ");
+        taskJSON.append("\"due_date\" : \"" + taskSet.getString("due_date") + "\", ");
+        taskJSON.append("\"creation_date\" : \"" + taskSet.getString("creation_date") + "\"}");
+
+        return taskJSON.toString();
+    }
+
 }
