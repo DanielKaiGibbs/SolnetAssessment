@@ -37,7 +37,6 @@ public class DatabaseHelper {
 
 	/**
 	 * Insert sample seed data into the database.
-	 *
 	 * @param conn
 	 * @throws SQLException
 	 */

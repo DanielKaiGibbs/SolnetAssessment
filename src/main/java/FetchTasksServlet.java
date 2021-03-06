@@ -42,14 +42,21 @@ public class FetchTasksServlet extends HttpServlet {
                 return;
             }
 
-            out.print("[");
+            StringBuilder jsonOutput = new StringBuilder("[");
             while(true) {
-                out.print(taskToJSON(queryResult));
+                try {
+                    jsonOutput.append(taskToJSON(queryResult));
+                } catch (SQLException e) {
+                    out.println("Malformed database entries: " + e);
+                    response.setStatus(400);
+                    return;
+                }
 
-                if (queryResult.next()) out.println(", ");
+                if (queryResult.next()) jsonOutput.append(", ");
                 else break;
             }
-            out.print("]");
+            jsonOutput.append("]");
+            out.println(jsonOutput.toString());
             response.setStatus(200);
 
         } catch (SQLException e) {
