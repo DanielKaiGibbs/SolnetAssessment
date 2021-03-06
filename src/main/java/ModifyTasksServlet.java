@@ -16,7 +16,7 @@ public class ModifyTasksServlet extends HttpServlet {
     public void init() throws ServletException {}
 
     /**
-     * Respond to API requests to fetch data from the database.
+     * Respond to API requests to modify data from the database.
      * @param request
      * @param response
      * @throws ServletException
@@ -41,11 +41,9 @@ public class ModifyTasksServlet extends HttpServlet {
             JSONObject jsonRequest = new JSONObject(taskData);
             String query = "";
 
-            //Determine the required parameters and ensure they have been presented
+            //Ensure that the incoming JSON contains the correct attributes to alter or add a new entry
             String[] requiredAttributes;
-            if (request.getRequestURI().equals("/del"))
-                requiredAttributes = new String[]{"id"};
-            else if (request.getRequestURI().equals("/add"))
+            if (request.getRequestURI().equals("/add"))
                 requiredAttributes = new String[]{"title", "description", "status", "due_date", "creation_date"};
             else if (request.getRequestURI().equals("/update"))
                 requiredAttributes = new String[]{"id", "title", "description", "status", "due_date", "creation_date"};
@@ -62,11 +60,7 @@ public class ModifyTasksServlet extends HttpServlet {
             }
 
             //Determine the query to apply to the database
-            if (request.getRequestURI().equals("/delete")) {
-
-            }
-            //Check that the incoming JSON contains the correct attributes to alter or add a new entry
-            else if (request.getRequestURI().equals("/add")) {
+            if (request.getRequestURI().equals("/add")) {
                 query = "INSERT INTO tasks (title, description, status, due_date, creation_date) " +
                         " VALUES (" +
                         "'" + jsonRequest.get("title") + "', " +

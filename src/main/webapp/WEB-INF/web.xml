@@ -9,10 +9,13 @@
 		<servlet-name>FetchTasksServlet</servlet-name>
 		<servlet-class>FetchTasksServlet</servlet-class>
 	</servlet>
-
 	<servlet>
 		<servlet-name>ModifyTasksServlet</servlet-name>
 		<servlet-class>ModifyTasksServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteTasksServlet</servlet-name>
+		<servlet-class>DeleteTasksServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -32,7 +35,7 @@
 		<url-pattern>/update</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ModifyTasksServlet</servlet-name>
+		<servlet-name>DeleteTasksServlet</servlet-name>
 		<url-pattern>/delete</url-pattern>
 	</servlet-mapping>
 
