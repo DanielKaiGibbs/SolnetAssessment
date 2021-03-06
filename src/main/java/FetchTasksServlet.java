@@ -41,16 +41,18 @@ public class FetchTasksServlet extends HttpServlet {
                 return;
             }
 
-            int columnCount = queryResult.getMetaData().getColumnCount();
-
+            out.print("[");
             do {
-                StringBuilder rowString = new StringBuilder();
-                for (int i = 0; i < columnCount;) {
-                    rowString.append(queryResult.getString(i + 1));
-                    if (++i < columnCount) rowString.append(", ");
-                }
-                out.println("<p>" + rowString.toString() + "</p>");
+                out.print("{");
+                out.println("\"id\" : " + queryResult.getString("id") + ", ");
+                out.println("\"title\" : \"" + queryResult.getString("title") + "\", ");
+                out.println("\"description\" : \"" + queryResult.getString("description") + "\", ");
+                out.println("\"status\" : \"" + queryResult.getString("status") + "\", ");
+                out.println("\"due_date\" : \"" + queryResult.getString("due_date") + "\", ");
+                out.println("\"creation_date\" : \"" + queryResult.getString("creation_date") + "\"}, ");
             } while(queryResult.next());
+            out.print("]");
+
             response.setStatus(200);
 
         } catch (SQLException e) {
