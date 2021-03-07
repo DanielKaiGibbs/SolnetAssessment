@@ -45,13 +45,7 @@ public class ModifyTasksServlet extends HttpServlet {
             String[] requiredAttributes;
             if (request.getRequestURI().equals("/add"))
                 requiredAttributes = new String[]{"title", "description", "status", "due_date", "creation_date"};
-            else if (request.getRequestURI().equals("/update"))
-                requiredAttributes = new String[]{"id", "title", "description", "status", "due_date", "creation_date"};
-            else {
-                response.setStatus(400);
-                out.println("Error: Unsupported API request \"" + request.getRequestURI() + "\"");
-                return;
-            }
+            else requiredAttributes = new String[]{"id", "title", "description", "status", "due_date", "creation_date"};
 
             if (!jsonPayload.keySet().containsAll(Arrays.asList(requiredAttributes))) {
                 response.setStatus(400);

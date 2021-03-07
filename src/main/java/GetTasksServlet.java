@@ -28,14 +28,14 @@ public class GetTasksServlet extends HttpServlet {
         //Determine the query to apply to the database
         String query = "";
 
-        if (request.getRequestURI().equals("/fetch")) {
+        if (request.getRequestURI().equals("/get")) {
             query = "SELECT * FROM tasks";
 
             //Extract the taskName parameter to filter down to the specified task
             String idParam = request.getParameter("id");
             if (idParam != null) query += " WHERE id = " + idParam + "";
         }
-        else if (request.getRequestURI().equals("/fetchOverdue"))
+        else if (request.getRequestURI().equals("/getOverdue"))
             query = "SELECT * FROM tasks WHERE due_date < CAST('" + new java.sql.Date(System.currentTimeMillis()) + "' AS DATE)";
 
         try {
