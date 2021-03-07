@@ -73,8 +73,6 @@ public class ModifyTasksServlet extends HttpServlet {
                         "WHERE id = " + jsonPayload.get("id");
             }
 
-            System.out.println(query);
-
             //Apply the query to the database
             DatabaseHelper.updateDatabase(query);
 
